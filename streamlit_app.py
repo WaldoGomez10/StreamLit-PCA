@@ -57,6 +57,7 @@ respond_pages = [respond_1, respond_2]
 admin_pages = [admin_1, admin_2]
 
 st.title("Request manager")
+st.image("images/logo_TAW.png", width=300)
 st.logo("images/logo_TAW.png", icon_image="images/icon_blue.png")
 
 page_dict = {}
