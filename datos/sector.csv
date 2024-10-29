@@ -1,0 +1,67 @@
+﻿Sector;Numero
+Agricultura/Ganadería;1
+Agropecuaria;2
+Arquitectura;3
+Automotriz;4
+Autopistas;5
+Aviación/Aeronaves/Astilleros;6
+Banca/Finanzas/Seguros;7
+Científica;8
+Comercial;9
+Comercio mayorista;10
+Comercio minorista;11
+Construcción;12
+Consultoría en RRHH;13
+Consultoría/Asesorí­a;14
+Consumo Masivo;15
+Cosmética y  Belleza;16
+Defensa;17
+Diseño y Decoración;18
+Educación;19
+Electrónica;20
+Entretenimiento;21
+Estudios Jurídicos;22
+Exportación e Importación;23
+Fabricación de sustancias y productos quí­micos;24
+Fabricación de vehículos y maquinaria;25
+Farmaceuticas;26
+Forestal/Papel y Celulosa;27
+Gobierno;28
+Hotelería / Turismo;29
+Imprenta / Editoriales;30
+Industria Metalmecánica;31
+Industrias varias;32
+Ingeniería;33
+Inmobiliaria y actividades de alquiler;34
+Internet;35
+Inversiones;36
+Investigación;37
+Laboratorio;38
+Logística / Distribución;39
+Manufactureras varias;40
+Maquinaria;41
+Materiales de Construcción;42
+Medios de Comunicación y Comunicaciones;43
+Minería e Hidrocarburos;44
+Naviera;45
+ONG;46
+Organizaciones y Órganos extraterritoriales;47
+Outsourcing;48
+"""Pesca, acuicultura y actividades relacionadas""";49
+Producción de alimentos y bebidas;50
+Producción de madera y Fabricación de productos de madera y corcho;51
+Publicidad / RRPP;52
+Quí­mica;53
+Restaurantes;54
+Retail;55
+Seguridad;56
+Seguros / Previsión;57
+Servicios;58
+Servicios Profesionales;59
+Servicios sociales y de salud;60
+Siderurgia;61
+"""Suministro de electricidad, gas y agua""";62
+Tecnologías de la información y Sistemas;63
+Telecomunicaciones;64
+Textil;65
+Transporte/Almacenamiento;66
