@@ -4,7 +4,6 @@ from datetime import datetime
 from sklearn.neighbors import NearestNeighbors
 from sklearn.feature_extraction.text import TfidfVectorizer
 
-
 st.header("Recomendaciones Principales")
 
 # Acceder a nuevo_dataframe
@@ -16,7 +15,7 @@ if "nuevo_dataframe" in st.session_state and not st.session_state.nuevo_datafram
     trabajo = pd.read_csv("datos/datos_trabajo.csv", sep=";")
 
     # Filtrar datos de trabajo por la fecha actual
-    #today = datetime.today().strftime('%Y-%m-%d')
+    # today = datetime.today().strftime('%Y-%m-%d')
     today = "2024-10-21"
     datos = trabajo[trabajo["FECHAFIN"] >= today]
 
@@ -43,20 +42,55 @@ if "nuevo_dataframe" in st.session_state and not st.session_state.nuevo_datafram
     # Seleccionar las columnas en el orden de datos
     user_data = user_data[datos.columns]
 
-    # Concatenar los dataframes
-    datos_combinados = pd.concat([datos, user_data], ignore_index=True)
+    # Concatenar los DataFrames
+    datos = pd.concat([datos, user_data], ignore_index=True)
 
     # Mostrar los datos combinados
     st.write("Datos combinados:")
-    st.dataframe(datos_combinados)
+    st.dataframe(datos)
+
+    # Definir la función de recomendación
+    def recomendar_vecinos(data, input_index, k):
+        # Paso 1: Combinar las columnas relevantes en un nuevo campo para recomendación
+        data['COMBINED'] = (data['NOMBREAVISO'] + ' ' + data['DEPARTAMENTO'] + ' ' +
+                            data['PROVINCIA'] + ' ' + data['DISTRITO'] + ' ' +
+                            data['SINEXPERIENCIA'] + ' ' +
+                            data['EXPERIENCIA_MESES'].astype(str) + ' ' +
+                            data['TIPOTIEMPOEXPERIENCIA'] + ' ' + data['ESCO'] + ' ' +
+                            data['NOMBRECOMPETENCIA'])
+        
+        # Paso 2: Crear la matriz TF-IDF basada en la columna 'COMBINED'
+        vectorizer = TfidfVectorizer(lowercase=True, stop_words=["y", "de"], token_pattern=r'\b\w+\b', use_idf=True)
+        X = vectorizer.fit_transform(data['COMBINED'])
+
+        # Paso 3: Entrenar el modelo de vecinos más cercanos usando la métrica de distancia coseno
+        modelo = NearestNeighbors(n_neighbors=k+1, metric='cosine')  # k+1 porque queremos el aviso más k vecinos
+        modelo.fit(X)
+
+        # Paso 4: Obtener las recomendaciones (vecinos más cercanos)
+        distances, indices = modelo.kneighbors(X[input_index], n_neighbors=k+1)  # k+1 para incluir el propio punto
+        recommended_indices = indices[0][1:]  # Excluir el propio punto en la lista de recomendaciones
+
+        # Paso 5: Mostrar el propio aviso primero seguido de las recomendaciones
+        propia_vacante = data.iloc[[input_index]]
+        recomendaciones = data.iloc[recommended_indices]
+
+        # Paso 6: Concatenar el propio aviso con las recomendaciones y retornar el resultado
+        resultado = pd.concat([propia_vacante, recomendaciones])
+
+        return resultado[['NOMBREAVISO', 'DEPARTAMENTO', 'PROVINCIA', 'DISTRITO',
+                          'FECHAINICIO', 'FECHAFIN', 'SINEXPERIENCIA', 'MODALIDADTRABAJO',
+                          'TIEMPOEXPERIENCIA', 'TIPOTIEMPOEXPERIENCIA', 'SECTOR', 'ESCO',
+                          'NOMBRECOMPETENCIA',"EXPERIENCIA_MESES"]]
+
+    # Aplicar la función de recomendación
+    st.write("Recomendaciones:")
+    input_index = datos.index[-1]  # Índice del nuevo registro
+    recomendaciones = recomendar_vecinos(datos, input_index, k=5)  # k=5 para 5 recomendaciones
+    st.dataframe(recomendaciones)
+
 else:
     st.write("No hay datos recopilados. Por favor, complete el formulario de registro primero.")
-
-# Trabajando con los datos combinados
-trabajo = pd.read_csv("datos/datos_trabajo.csv", sep=";")
-datos = trabajo[trabajo["FECHAFIN"] >= "2024-10-21"]  # La fecha sería fecha de hoy que se actualiza diariamente
-
-st.write(datos.columns)
 
 # Crear la columna de números consecutivos
 # datos['ID_CONSECUTIVO'] = range(1, len(datos) + 1)
