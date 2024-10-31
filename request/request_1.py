@@ -8,11 +8,11 @@ if "datos" not in st.session_state:
         "Género", "Departamento", "Provincia", "Distrito",
         "¿Tiene tarjeta CONADIS?", "Tipo de Discapacidad",
         "Sectores Preferentes", "¿Tiene experiencia laboral?",
-        "Tiempo de experiencia laboral (meses)"
+        "Tiempo de experiencia laboral (meses)", "Skills"
     ])
 
-# Inicializa el nuevo_dataframe como una variable global
-nuevo_dataframe = pd.DataFrame()
+if "skills" not in st.session_state:
+    st.session_state.skills = []
 
 # Valores para el nivel educativo
 educacion_values = [
@@ -109,14 +109,15 @@ if st.button("Enviar"):
             "Tipo de Discapacidad": st.session_state.discapacidad,
             "Sectores Preferentes": ", ".join(selected_sectores),
             "¿Tiene experiencia laboral?": experiencia,
-            "Tiempo de experiencia laboral (meses)": años_experiencia
+            "Tiempo de experiencia laboral (meses)": años_experiencia,
+            "Skills": ""
         }
-        # Guardar en la variable global
-        nuevo_dataframe = pd.DataFrame([new_data])
+        # Guardar en el session_state
+        st.session_state.nuevo_dataframe = pd.DataFrame([new_data])
 
         # Mostrar el DataFrame
         st.write("Datos recopilados:")
-        st.dataframe(nuevo_dataframe)
+        st.dataframe(st.session_state.nuevo_dataframe)
 
         # Limpiar st.session_state.datos
         st.session_state.datos = pd.DataFrame(columns=st.session_state.datos.columns)
@@ -128,8 +129,8 @@ if st.button("Enviar"):
         st.error("Por favor completa todos los campos.")
 
 # Mostrar solo la segunda columna del nuevo_dataframe si ya se ha llenado
-if not nuevo_dataframe.empty:
-    st.write("Apellidos:", nuevo_dataframe["Last name"])
+if "nuevo_dataframe" in st.session_state and not st.session_state.nuevo_dataframe.empty:
+    st.write("Apellidos:", st.session_state.nuevo_dataframe["Last name"])
 
 # Botón para ir a Skill Assesment
 if st.button("Ir a Skill Assesment"):
