@@ -15,8 +15,7 @@ if "nuevo_dataframe" in st.session_state and not st.session_state.nuevo_datafram
     trabajo = pd.read_csv("datos/datos_trabajo.csv", sep=";")
 
     # Filtrar datos de trabajo por la fecha actual
-    # today = datetime.today().strftime('%Y-%m-%d')
-    today = "2024-10-21"
+    today = "2024-10-21"  # Fecha actual fija para evitar problemas de pruebas
     datos = trabajo[trabajo["FECHAFIN"] >= today]
 
     # Crear una copia de nuevo_dataframe y renombrar las columnas para coincidir
@@ -44,10 +43,6 @@ if "nuevo_dataframe" in st.session_state and not st.session_state.nuevo_datafram
 
     # Concatenar los DataFrames
     datos = pd.concat([datos, user_data], ignore_index=True)
-
-    # Mostrar los datos combinados
-    st.write("Datos combinados:")
-    st.dataframe(datos)
 
     # Definir la función de recomendación con pesos
     def recomendar_vecinos(data, input_index, k, pesos):
@@ -84,7 +79,7 @@ if "nuevo_dataframe" in st.session_state and not st.session_state.nuevo_datafram
         return resultado[['NOMBREAVISO', 'DEPARTAMENTO', 'PROVINCIA', 'DISTRITO',
                           'FECHAINICIO', 'FECHAFIN', 'SINEXPERIENCIA', 'MODALIDADTRABAJO',
                           'TIEMPOEXPERIENCIA', 'TIPOTIEMPOEXPERIENCIA', 'SECTOR', 'ESCO',
-                          'NOMBRECOMPETENCIA', 'EXPERIENCIA_MESES']]
+                          'NOMBRECOMPETENCIA']]
 
     # Definir los pesos para cada columna
     pesos = {
@@ -104,6 +99,16 @@ if "nuevo_dataframe" in st.session_state and not st.session_state.nuevo_datafram
     input_index = datos.index[-1]  # Índice del nuevo registro
     recomendaciones = recomendar_vecinos(datos, input_index, k=5, pesos=pesos)  # k=5 para 5 recomendaciones
     st.dataframe(recomendaciones)
+
+    # Selección de recomendación para ver similares
+    st.header("Otras Recomendaciones")
+    seleccion = st.selectbox("Selecciona una recomendación para ver las similares", recomendaciones['NOMBREAVISO'])
+
+    if seleccion:
+        selected_index = datos[datos['NOMBREAVISO'] == seleccion].index[0]
+        similares = recomendar_vecinos(datos, selected_index, k=5, pesos=pesos)
+        st.write(f"Recomendaciones similares a '{seleccion}':")
+        st.dataframe(similares)
 
 else:
     st.write("No hay datos recopilados. Por favor, complete el formulario de registro primero.")
