@@ -26,15 +26,16 @@ st.header("INFORMACIÓN GENERAL")
 
 # Inputs de información general
 col1, col2 = st.columns(2)
-col1.text_input("First names", key="first_name")
-col2.text_input("Last names", key="last_name")
+col1.text_input("Nombres", key="first_name")
+col2.text_input("Apellidos", key="last_name")
 col3, col4 = st.columns(2)
 col3.number_input("Edad", min_value=0, key="edad")
 col4.text_input("Correo", key="correo")
 col5, col6 = st.columns(2)
 col5.selectbox("Selecciona tu nivel educativo:", educacion_values, key="nivel_educativo")
-col6.selectbox("Género", ["Femenino", "Masculino", "Otro"], key="genero")
+col6.selectbox("Sexo", ["Femenino", "Masculino"], key="genero")
 
+st.write("¿Donde vive?")
 # Leer el CSV y crear el diccionario de provincias y distritos
 df = pd.read_csv('datos/distritos.csv', sep=";")
 data = {}
@@ -64,7 +65,7 @@ else:
 
 # Inputs adicionales
 col10, col11 = st.columns(2)
-col10.selectbox("¿Tiene tarjeta CONADIS?", ["Sí", "No"], key="conadis")
+col10.selectbox("¿Está inscrito en CONADIS?", ["Sí", "No"], key="conadis")
 col11.selectbox("¿Qué tipo de Discapacidad tiene?", [
     "Discapacidad Física o Motora", "Discapacidad Sensorial",
     "Discapacidad intelectual", "Discapacidad mental o psíquica"

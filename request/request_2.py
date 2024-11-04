@@ -2,10 +2,24 @@ import streamlit as st
 import pandas as pd
 
 st.header("Skill Assesment")
-skills_tipos = ["realizar", "gestionar", "productos", "clientes", "limpieza", "equipos", "aplicar", "actividades", "registros", "comunicarse"]
-skills = st.multiselect("Selecciona hasta 3 sectores", skills_tipos, key="skills")
-if len(skills) > 3:
-    st.error("Puedes seleccionar un máximo de 3 skills.")
+
+
+skills_tipos = [
+    'adaptarse', 'afrontar', 'analizar', 'aplicar', 'archivar', 'asegurar', 'asesorar', 'asistir', 'asumir', 
+    'ayudar', 'calcular', 'cambiar', 'cargar', 'colaborar', 'comprobar', 'comunicarse', 'comunicar', 
+    'conducir', 'conservar', 'consultar', 'controlar', 'coordinar', 'cosechar', 'crear', 'cuidar', 
+    'cumplir', 'cultivar', 'desarrollar', 'desinfectar', 'detectar', 'determinar', 'diseñar', 'efectuar', 
+    'elaborar', 'eliminar', 'emitir', 'emplear', 'empaquetar', 'enseñar', 'entregar', 'establecer', 
+    'estándar', 'evaluar', 'examinar', 'ejecutar', 'facilitar', 'garantizar', 'gestionar', 'gestión', 
+    'identificar', 'instalar', 'interpretar', 'leer', 'levantar', 'limpiar', 'manejar', 'mantener', 
+    'mantenerse', 'manipular', 'negociar', 'observar', 'ofrecer', 'operar', 'organizar', 'pensar', 
+    'planificar', 'practicar', 'presentar', 'preparar', 'procesar', 'proporcionar', 'proteger', 
+    'promocionar', 'realizar', 'recibir', 'redactar', 'rellenar', 'reparar', 'resolver', 'respetar', 
+    'responder', 'revisar', 'seguir', 'supervisar', 'tolerar', 'trabajar', 'utilizar'
+]
+skills = st.multiselect("Selecciona hasta 5 verbos con los que te sientas identificado", skills_tipos, key="skills")
+if len(skills) > 5:
+    st.error("Puedes seleccionar un máximo de 5 verbos.")
 
 if st.button("Recomendaciones de Trabajo"):
     if "nuevo_dataframe" in st.session_state and not st.session_state.nuevo_dataframe.empty:

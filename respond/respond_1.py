@@ -11,7 +11,7 @@ if "nuevo_dataframe" in st.session_state and not st.session_state.nuevo_datafram
     st.write("Datos recopilados:")
     st.dataframe(st.session_state.nuevo_dataframe)
 
-    # Leer los datos de trabajo
+    # Datos de trabajo -- YA FILTRADO POR ESCDE = SI (TRABAJO PARA PERSONAS CON DISCAPACIDAD)
     trabajo = pd.read_csv("datos/datos_trabajo.csv", sep=";")
 
     # Filtrar datos de trabajo por la fecha actual
@@ -49,16 +49,19 @@ if "nuevo_dataframe" in st.session_state and not st.session_state.nuevo_datafram
     st.write("Datos combinados:")
     st.dataframe(datos)
 
-    # Definir la función de recomendación
-    def recomendar_vecinos(data, input_index, k):
-        # Paso 1: Combinar las columnas relevantes en un nuevo campo para recomendación
-        data['COMBINED'] = (data['NOMBREAVISO'] + ' ' + data['DEPARTAMENTO'] + ' ' +
-                            data['PROVINCIA'] + ' ' + data['DISTRITO'] + ' ' +
-                            data['SINEXPERIENCIA'] + ' ' +
-                            data['EXPERIENCIA_MESES'].astype(str) + ' ' +
-                            data['TIPOTIEMPOEXPERIENCIA'] + ' ' + data['ESCO'] + ' ' +
-                            data['NOMBRECOMPETENCIA'])
-        
+    # Definir la función de recomendación con pesos
+    def recomendar_vecinos(data, input_index, k, pesos):
+        # Paso 1: Combinar las columnas relevantes en un nuevo campo para recomendación aplicando los pesos
+        data['COMBINED'] = ((data['NOMBREAVISO'] + ' ') * pesos['NOMBREAVISO'] +
+                            (data['DEPARTAMENTO'] + ' ') * pesos['DEPARTAMENTO'] +
+                            (data['PROVINCIA'] + ' ') * pesos['PROVINCIA'] +
+                            (data['DISTRITO'] + ' ') * pesos['DISTRITO'] +
+                            (data['SINEXPERIENCIA'] + ' ') * pesos['SINEXPERIENCIA'] +
+                            (data['EXPERIENCIA_MESES'].astype(str) + ' ') * pesos['EXPERIENCIA_MESES'] +
+                            (data['TIPOTIEMPOEXPERIENCIA'] + ' ') * pesos['TIPOTIEMPOEXPERIENCIA'] +
+                            (data['ESCO'] + ' ') * pesos['ESCO'] +
+                            (data['NOMBRECOMPETENCIA'] + ' ') * pesos['NOMBRECOMPETENCIA'])
+
         # Paso 2: Crear la matriz TF-IDF basada en la columna 'COMBINED'
         vectorizer = TfidfVectorizer(lowercase=True, stop_words=["y", "de"], token_pattern=r'\b\w+\b', use_idf=True)
         X = vectorizer.fit_transform(data['COMBINED'])
@@ -81,19 +84,26 @@ if "nuevo_dataframe" in st.session_state and not st.session_state.nuevo_datafram
         return resultado[['NOMBREAVISO', 'DEPARTAMENTO', 'PROVINCIA', 'DISTRITO',
                           'FECHAINICIO', 'FECHAFIN', 'SINEXPERIENCIA', 'MODALIDADTRABAJO',
                           'TIEMPOEXPERIENCIA', 'TIPOTIEMPOEXPERIENCIA', 'SECTOR', 'ESCO',
-                          'NOMBRECOMPETENCIA',"EXPERIENCIA_MESES"]]
+                          'NOMBRECOMPETENCIA', 'EXPERIENCIA_MESES']]
+
+    # Definir los pesos para cada columna
+    pesos = {
+        'NOMBREAVISO': 1,
+        'DEPARTAMENTO': 1,
+        'PROVINCIA': 2,
+        'DISTRITO': 1,
+        'SINEXPERIENCIA': 3,
+        'EXPERIENCIA_MESES': 1,
+        'TIPOTIEMPOEXPERIENCIA': 1,
+        'ESCO': 2,
+        'NOMBRECOMPETENCIA': 3
+    }
 
     # Aplicar la función de recomendación
     st.write("Recomendaciones:")
     input_index = datos.index[-1]  # Índice del nuevo registro
-    recomendaciones = recomendar_vecinos(datos, input_index, k=5)  # k=5 para 5 recomendaciones
+    recomendaciones = recomendar_vecinos(datos, input_index, k=5, pesos=pesos)  # k=5 para 5 recomendaciones
     st.dataframe(recomendaciones)
 
 else:
     st.write("No hay datos recopilados. Por favor, complete el formulario de registro primero.")
-
-# Crear la columna de números consecutivos
-# datos['ID_CONSECUTIVO'] = range(1, len(datos) + 1)
-# datos.reset_index(drop=True, inplace=True)
-
-# st.write(datos)
