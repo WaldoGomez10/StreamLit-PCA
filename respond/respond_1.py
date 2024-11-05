@@ -8,8 +8,8 @@ st.header("Recomendaciones Principales")
 
 # Acceder a nuevo_dataframe
 if "nuevo_dataframe" in st.session_state and not st.session_state.nuevo_dataframe.empty:
-    st.write("Datos recopilados:")
-    st.dataframe(st.session_state.nuevo_dataframe)
+    #st.write("Datos recopilados:")
+    #st.dataframe(st.session_state.nuevo_dataframe)
 
     # Datos de trabajo -- YA FILTRADO POR ESCDE = SI (TRABAJO PARA PERSONAS CON DISCAPACIDAD)
     trabajo = pd.read_csv("datos/datos_trabajo.csv", sep=";")

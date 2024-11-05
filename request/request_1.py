@@ -26,8 +26,7 @@ st.header("INFORMACIÓN GENERAL")
 
 # Inputs de información general
 col1, col2 = st.columns(2)
-col1.markdown("🧑‍🎓 Nombres")
-col1.text_input("",key="first_name")
+col1.text_input("Nombres",key="first_name")
 col2.text_input("Apellidos", key="last_name")
 col3, col4 = st.columns(2)
 col3.number_input("Edad", min_value=0, key="edad")
