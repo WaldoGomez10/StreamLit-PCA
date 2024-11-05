@@ -1,0 +1,46 @@
+/* style.css */
+body {
+    background-image: url("assets/background.jpg"); /* Cambia a la ruta de tu imagen */
+    background-size: cover; /* Ajusta el tamaño de la imagen */
+    background-position: center; /* Centra la imagen */
+    background-repeat: no-repeat; /* No repite la imagen */
+    height: 100vh; /* Asegura que cubra toda la altura */
+    margin: 0; /* Elimina márgenes */
+}
+
+header, .stApp {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+h1 {
+    color: #333333;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    border-radius: 16px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+.stButton > button {
+    width: 100%;
+    border-radius: 16px;
+}
+
+.stSelectbox, .stTextInput {
+    width: 100%;
+    border-radius: 10px;
+}

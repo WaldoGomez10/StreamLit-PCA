@@ -1,8 +1,17 @@
 import streamlit as st
+
+# Función para agregar el archivo CSS personalizado
+def add_custom_css(file_path):
+    with open(file_path) as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
+# Agregar el archivo CSS personalizado
+add_custom_css("assets/style.css")  # Asegúrate de que esta ruta sea correcta
+
 if "role" not in st.session_state:
     st.session_state.role = None
 
-ROLES = [None, "Registrarse", "Skill Assesment","Recomendaciones Principales","Otras Recomendaciones"]
+ROLES = [None, "Registrarse", "Skill Assesment", "Recomendaciones Principales"]
 
 def login():
     st.header("Bienvenido")
@@ -35,22 +44,15 @@ request_2 = st.Page(
 )
 request_3 = st.Page(
     "respond/respond_1.py",
-    title="Recomendaciones Principales",
-    icon=":material/healing:",
-    default=(role == "Recomendaciones Principales"),
-)
-
-request_4 = st.Page(
-    "respond/respond_2.py", 
-    title="Otras recomendaciones", 
+    title="Recomendaciones",
     icon=":material/handyman:",
-    default=(role == "Otras Recomendaciones")
+    default=(role == "Recomendaciones Principales"),
 )
 
 account_pages = [logout_page, settings]
 request_pages = [request_1]
 request_pages2 = [request_1, request_2]
-request_pages3 = [request_1,request_2,request_3,request_4]
+request_pages3 = [request_1, request_2, request_3]
 
 st.title("SISTEMA DE RECOMENDACIÓN")
 st.logo("images/logo_TAW.png", icon_image="images/icon_data.png")
@@ -62,7 +64,6 @@ if st.session_state.role == "Skill Assesment":
     page_dict["Skill Assesment"] = request_pages2
 if st.session_state.role == "Recomendaciones Principales":
     page_dict["Recomendaciones Principales"] = request_pages3
-
 
 if len(page_dict) > 0:
     pg = st.navigation({"Cuenta": account_pages} | page_dict)

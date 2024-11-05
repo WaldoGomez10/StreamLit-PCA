@@ -69,17 +69,13 @@ if "nuevo_dataframe" in st.session_state and not st.session_state.nuevo_datafram
         distances, indices = modelo.kneighbors(X[input_index], n_neighbors=k+1)  # k+1 para incluir el propio punto
         recommended_indices = indices[0][1:]  # Excluir el propio punto en la lista de recomendaciones
 
-        # Paso 5: Mostrar el propio aviso primero seguido de las recomendaciones
-        propia_vacante = data.iloc[[input_index]]
+        # Retornar las recomendaciones sin incluir el propio punto
         recomendaciones = data.iloc[recommended_indices]
 
-        # Paso 6: Concatenar el propio aviso con las recomendaciones y retornar el resultado
-        resultado = pd.concat([propia_vacante, recomendaciones])
-
-        return resultado[['NOMBREAVISO', 'DEPARTAMENTO', 'PROVINCIA', 'DISTRITO',
-                          'FECHAINICIO', 'FECHAFIN', 'SINEXPERIENCIA', 'MODALIDADTRABAJO',
-                          'TIEMPOEXPERIENCIA', 'TIPOTIEMPOEXPERIENCIA', 'SECTOR', 'ESCO',
-                          'NOMBRECOMPETENCIA']]
+        return recomendaciones[['NOMBREAVISO', 'DEPARTAMENTO', 'PROVINCIA', 'DISTRITO',
+                                'FECHAINICIO', 'FECHAFIN', 'SINEXPERIENCIA', 'MODALIDADTRABAJO',
+                                'TIEMPOEXPERIENCIA', 'TIPOTIEMPOEXPERIENCIA', 'SECTOR', 'ESCO',
+                                'NOMBRECOMPETENCIA']]
 
     # Definir los pesos para cada columna
     pesos = {
@@ -90,8 +86,8 @@ if "nuevo_dataframe" in st.session_state and not st.session_state.nuevo_datafram
         'SINEXPERIENCIA': 3,
         'EXPERIENCIA_MESES': 1,
         'TIPOTIEMPOEXPERIENCIA': 1,
-        'ESCO': 2,
-        'NOMBRECOMPETENCIA': 3
+        'ESCO': 4,
+        'NOMBRECOMPETENCIA': 4
     }
 
     # Aplicar la función de recomendación

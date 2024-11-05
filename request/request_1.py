@@ -26,7 +26,8 @@ st.header("INFORMACIÓN GENERAL")
 
 # Inputs de información general
 col1, col2 = st.columns(2)
-col1.text_input("Nombres", key="first_name")
+col1.markdown("🧑‍🎓 Nombres")
+col1.text_input("",key="first_name")
 col2.text_input("Apellidos", key="last_name")
 col3, col4 = st.columns(2)
 col3.number_input("Edad", min_value=0, key="edad")
@@ -129,11 +130,12 @@ if st.button("Enviar"):
     else:
         st.error("Por favor completa todos los campos.")
 
-# Mostrar solo la segunda columna del nuevo_dataframe si ya se ha llenado
-if "nuevo_dataframe" in st.session_state and not st.session_state.nuevo_dataframe.empty:
-    st.write("Apellidos:", st.session_state.nuevo_dataframe["Last name"])
+
+#if "nuevo_dataframe" in st.session_state and not st.session_state.nuevo_dataframe.empty:
+#    st.write("Apellidos:", st.session_state.nuevo_dataframe["Last name"])
 
 # Botón para ir a Skill Assesment
 if st.button("Ir a Skill Assesment"):
     st.session_state.role = "Skill Assesment"
     st.rerun()
+    
