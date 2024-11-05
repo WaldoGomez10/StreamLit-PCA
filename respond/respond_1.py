@@ -80,14 +80,14 @@ if "nuevo_dataframe" in st.session_state and not st.session_state.nuevo_datafram
     # Definir los pesos para cada columna
     pesos = {
         'NOMBREAVISO': 1,
-        'DEPARTAMENTO': 1,
+        'DEPARTAMENTO': 4,
         'PROVINCIA': 2,
         'DISTRITO': 1,
         'SINEXPERIENCIA': 3,
         'EXPERIENCIA_MESES': 1,
         'TIPOTIEMPOEXPERIENCIA': 1,
-        'ESCO': 4,
-        'NOMBRECOMPETENCIA': 4
+        'ESCO': 3,
+        'NOMBRECOMPETENCIA': 3
     }
 
     # Aplicar la función de recomendación
